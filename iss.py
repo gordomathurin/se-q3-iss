@@ -55,11 +55,33 @@ def map_drawing(iss_location):
     turtle.done()
 
 
+def indy_mapping():
+    indy_screen = turtle.Screen()
+    indy_screen.bgpic('map.gif')
+    turtle.setup(width=720, height=360, startx=None, starty=None)
+    indy_screen.setworldcoordinates(-180, -90, 180, 90)
+    indy_screen.register_shape('iss.gif')
+
+    # this part setup the ISS
+    indy_iss = turtle.Turtle()
+    indy_iss.shape('iss.gif')
+
+    latitude = float(39.768402)
+    longitude = float(-86.158066)
+
+    indy_iss.penup()
+    indy_iss.goto(longitude, latitude)
+
+    # always last line
+    turtle.done()
+
+
 def main():
     get_astro_info()
     get_space_station_info()
     location_iss = get_coords()
     map_drawing(location_iss)
+    indy_mapping()
 
 
 if __name__ == '__main__':
