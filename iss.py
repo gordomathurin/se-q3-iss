@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 
-__author__ = 'Gordon'
+__author__ = 'Gordon Mathurin'
 
 import requests
 import turtle
+import time
 
 
 def get_astro_info():
@@ -25,6 +26,17 @@ def get_space_station_info():
     for coords in position_access:
         print(f"Longitude: {position_access['longitude']}")
         print(f"Latitude: {position_access['latitude']}")
+
+
+def indy_iss_over():
+    params = {'lat': float(39.768402), 'lon': float(-86.158066)}
+    r = requests.get('http://api.open-notify.org/iss-pass.json',
+                     params=params).json()
+
+    access_response = r['response'][0]['risetime']
+    convert_time = time.ctime(access_response)
+    print(convert_time)
+    return convert_time
 
 
 def get_coords():
@@ -51,28 +63,18 @@ def map_drawing(iss_location):
     iss.penup()
     iss.goto(longitude, latitude)
 
-    # always last line
-    turtle.done()
-
 
 def indy_mapping():
-    indy_screen = turtle.Screen()
-    indy_screen.bgpic('map.gif')
-    turtle.setup(width=720, height=360, startx=None, starty=None)
-    indy_screen.setworldcoordinates(-180, -90, 180, 90)
-    indy_screen.register_shape('iss.gif')
-
     # this part setup the ISS
-    indy_iss = turtle.Turtle()
-    indy_iss.shape('iss.gif')
-
     latitude = float(39.768402)
     longitude = float(-86.158066)
-
+    indy_iss = turtle.Turtle()
     indy_iss.penup()
     indy_iss.goto(longitude, latitude)
-
-    # always last line
+    indy_iss.color('red')
+    indy_iss.dot(8)
+    indy_iss.write(indy_iss_over())
+    indy_iss.hideturtle()
     turtle.done()
 
 
@@ -82,6 +84,7 @@ def main():
     location_iss = get_coords()
     map_drawing(location_iss)
     indy_mapping()
+    indy_iss_over()
 
 
 if __name__ == '__main__':
